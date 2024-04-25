@@ -1,23 +1,28 @@
 package Code;
 
-import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class UrlConnectionEx {
 	public static void main(String[] args) {
 		try {
-			URL url = new URL("192.168.100.19");
+			// Ensure the URL includes a protocol and potentially a resource path or port if
+			// necessary
+			URL url = new URL("http://192.168.100.19"); // Assuming HTTP protocol and default HTTP port
 			URLConnection connection = url.openConnection();
-			InputStream inputStream = connection.getInputStream();
-			int data = inputStream.read();
-			while (data != -1) {
-				System.out.println((char) data);
-				data = inputStream.read();
+
+			// Buffer the InputStream to improve efficiency
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+			String line;
+			while ((line = reader.readLine()) != null) {
+				System.out.println(line);
 			}
-			inputStream.close();
+			reader.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("Error: " + e.getMessage());
 		}
 	}
 }
